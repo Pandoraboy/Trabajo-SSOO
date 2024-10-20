@@ -16,7 +16,7 @@ struct Auto {
     Auto(int i, int d) : id(i), distancia_total(d), distancia_actual(0), terminado(false) {}
 };
 
-void correr(Auto &auto_obj, int &posicion_llegada, std::vector<int> &resultado) {
+void correr(Auto &auto_obj, int &posicion_llegada, std::vector<std::pair<int, int>> &resultado) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> avance_dist(1, 10); // Avance de 1 a 10 metros
@@ -43,7 +43,7 @@ void correr(Auto &auto_obj, int &posicion_llegada, std::vector<int> &resultado) 
         std::lock_guard<std::mutex> lock(mtx);
         auto_obj.terminado = true;
         posicion_llegada++;
-        resultado[auto_obj.id] = posicion_llegada; // Guardar la posición de llegada
+        resultado.push_back({posicion_llegada, auto_obj.id}); // Guardar la posición de llegada y el id del auto
         std::cout << "Auto" << auto_obj.id << " ha terminado la carrera en el lugar " 
                   << posicion_llegada << "!" << std::endl;
     }
@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
 
     std::vector<Auto> autos;
     std::vector<std::thread> threads;
-    std::vector<int> resultado(num_autos, 0); // Almacenar el lugar de llegada de cada auto
+    std::vector<std::pair<int, int>> resultado; // Almacenar el lugar de llegada y el id de cada auto
     int posicion_llegada = 0; // Para registrar la posición de llegada
 
     // Crear los autos
@@ -83,12 +83,12 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    // Mostrar el orden de llegada
+    // Mostrar el orden de llegada (ya está almacenado en el orden correcto)
     std::cout << "Resultados finales: " << std::endl;
     std::cout << "Lugar  | Auto" << std::endl;
     std::cout << "------------------" << std::endl;
-    for (int i = 0; i < num_autos; ++i) {
-        std::cout << resultado[i] << "     | Auto" << i << std::endl;
+    for (const auto& r : resultado) {
+        std::cout << r.first << "     | Auto" << r.second << std::endl;
     }
 
     return 0;
