@@ -11,6 +11,6 @@ requistos:
 1-Para clonar el repositorio ocupar "git clone https://github.com/Pandoraboy/Trabajo-SSOO"
 2-Ir a la carpeta con cd "Trabajo-SSOO"
 3-Comando "make" para compilar
-4- para ejecutar el programa ocupar "./trabajo <distancia_total> <numero_autos>"
+4- para ejecutar el programa ocupar "./trabajo1 <distancia_total> <numero_autos>"
 
 Autores: Nicolas Jimenez, Francisco Erices
